@@ -6,20 +6,22 @@ var $$Promise = require("@ryyppy/rescript-promise/src/Promise.bs.js");
 var MainnetJs = require("mainnet-js");
 
 function $$default(request, response) {
-  var seed = request.query.seed;
-  if (seed !== undefined) {
-    return $$Promise.$$catch(MainnetJs.TestNetWallet.fromSeed(seed).then(function (wallet) {
+  var address = request.query.address;
+  if (address !== undefined) {
+    return $$Promise.$$catch(MainnetJs.TestNetWallet.watchOnly(address).then(function (wallet) {
+                      return wallet.getBalance();
+                    }).then(function (balance) {
                     return Promise.resolve(response.status(200).send({
                                     TAG: /* Ok */0,
                                     _0: {
-                                      address: wallet.address
+                                      balance: balance
                                     }
                                   }));
                   }), (function (param) {
                   return Vercel.handleGatewayError(request, response, param);
                 }));
   } else {
-    return Vercel.sendError(response, 400, "Invalid seed");
+    return Vercel.sendError(response, 400, "No Address provided");
   }
 }
 

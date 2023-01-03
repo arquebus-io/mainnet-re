@@ -1,6 +1,9 @@
 open Promise
 type t
 module Types = {
+  @unboxed type satoshi = Satoshi(int)
+  @unboxed type bitcoin = Bitcoin(int)
+  @unboxed type usd = USD(int)
   @unboxed type derivationPath = DerivationPath(string)
   @unboxed type parentDerivationPath = ParentDerivationPath(string)
   type network = [#testnet]
@@ -29,6 +32,12 @@ module Types = {
     blockHeight: blockHeight,
     electrum: electrumClient,
     connectPromise: Promise.t<unit>,
+  }
+
+  type balanceObject = {
+    bch: bitcoin,
+    sat: satoshi,
+    usd: usd,
   }
 }
 open Types
@@ -64,6 +73,9 @@ type readonlyWallet
 external fromSeedAndDerivationPath: (t, mnemonic, derivationPath) => Promise.t<wallet> = "fromSeed"
 @send external fromWIF: (t, privateKeyWif) => Promise.t<wallet> = "fromWIF"
 @send external watchOnly: (t, address) => Promise.t<readonlyWallet> = "watchOnly"
+@send external getBalance: (wallet, unit) => Promise.t<Types.satoshi> = "getBalance"
+@send
+external getBalanceFromReadOnly: (readonlyWallet, unit) => Promise.t<Types.satoshi> = "getBalance"
 
 module Test = {
   let _ =

@@ -9,7 +9,9 @@ function $$default(request, response) {
   return $$Promise.$$catch(MainnetJs.TestNetWallet.newRandom().then(function (wallet) {
                   return Promise.resolve(response.status(200).send({
                                   TAG: /* Ok */0,
-                                  _0: wallet.mnemonic
+                                  _0: {
+                                    mnemonic: wallet.mnemonic
+                                  }
                                 }));
                 }), (function (param) {
                 return Vercel.handleGatewayError(request, response, param);

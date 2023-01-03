@@ -8,21 +8,23 @@ type request<'queryT, 'bodyT> = {
 }
 
 type data
-type response = {
+type response<'bodyT> = {
   status: int,
   statusText: string,
   data: data,
+  body: result<'bodyT, string>,
 }
 
-@send external status: (response, int) => response = "status"
-@send external send: (response, 't) => response = "send"
+@send external status: (response<'bodyT>, int) => response<'bodyT> = "status"
+@send external send: (response<'bodyT>, result<'bodyT, string>) => response<'bodyT> = "send"
 
-@get external getResponse: Js.Exn.t => option<response> = "response"
+@get external getResponse: Js.Exn.t => option<response<'body>> = "response"
 
-let sendError = (response, statusCode, statusText) =>
+let sendError = (response: response<'body>, statusCode: int, statusText: string) => {
   response->status(statusCode)->send(Error(statusText))->Promise.resolve
+}
 
-let handleGatewayError = (_request: request<'queryT, 'bodyT>, response: response, e) => {
+let handleGatewayError = (_request: request<'queryT, 'bodyT>, response: response<'body>, e) => {
   Js.log(e)
   open Promise
   let (statusCode, statusText) = switch e {
