@@ -4,6 +4,7 @@ type queryT = {address: option<string>}
 type bodyT = {balance: Mainnet.Types.satoshi}
 
 let default = (request: Vercel.request<queryT, _>, response: Vercel.response<bodyT>) => {
+  Mainnet.initChipnet()
   switch request.query.address {
   | None => Vercel.sendError(response, 400, "No Address provided")
   | Some(address) =>

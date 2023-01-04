@@ -7,6 +7,6 @@ if(process.env.NODE_ENV === 'production') {
   plugins.cssnano = {};
 }
 
-module.exports = {
+export default {
   plugins: plugins
 };

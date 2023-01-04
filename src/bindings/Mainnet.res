@@ -1,4 +1,3 @@
-open Promise
 type t
 module Types = {
   @unboxed type satoshi = Satoshi(int)
@@ -39,6 +38,9 @@ module Types = {
     sat: satoshi,
     usd: usd,
   }
+
+  type servers = {mutable testnet: array<string>}
+  type defaultProvider = {servers: servers}
 }
 open Types
 type wallet = {
@@ -67,6 +69,7 @@ type wallet = {
 type readonlyWallet
 
 @module("mainnet-js") external testNetWallet: t = "TestNetWallet"
+@module("mainnet-js") external defaultProvider: defaultProvider = "DefaultProvider"
 @send external newRandom: (t, unit) => Promise.t<wallet> = "newRandom"
 @send external fromSeed: (t, mnemonic) => Promise.t<wallet> = "fromSeed"
 @send
@@ -77,14 +80,7 @@ external fromSeedAndDerivationPath: (t, mnemonic, derivationPath) => Promise.t<w
 @send
 external getBalanceFromReadOnly: (readonlyWallet, unit) => Promise.t<Types.satoshi> = "getBalance"
 
-module Test = {
-  let _ =
-    testNetWallet
-    ->newRandom()
-    ->thenResolve(wallet => {
-      testNetWallet->watchOnly(wallet.address)
-    })
-    ->thenResolve(watchOnlyWallet => {
-      Js.log(watchOnlyWallet)
-    })
+let initChipnet = _ => {
+  defaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
 }
+/* initChipnet() */

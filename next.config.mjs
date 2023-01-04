@@ -1,12 +1,18 @@
-const bsconfig = require('./bsconfig.json');
-const fs = require("fs");
+import * as fs from 'fs';
+import bsconfig from './bsconfig.json' assert {type: 'json'};
+
+import nextTranspileModule from 'next-transpile-modules'
 
 const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
-const withTM = require("next-transpile-modules")(transpileModules);
+const withTM = nextTranspileModule(transpileModules);
 
 const isWebpack5 = true;
+
+/**
+ * @type {import('next').NextConfig}
+ */
 const config = {
-  pageExtensions: ["jsx", "js"],
+  pageExtensions: ["jsx", "js", "mjs"],
   env: {
     ENV: process.env.NODE_ENV,
   },
@@ -42,4 +48,4 @@ const config = {
   }
 };
 
-module.exports = withTM(config);
+export default withTM(config);

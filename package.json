@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "author": "Patrick Ecker <ryyppy@users.noreply.github.com>",
   "license": "Apache-2.0",
+  "type": "module",
   "dependencies": {
     "@ryyppy/rescript-promise": "^2.1.0",
-    "mainnet-js": "^0.5.4",
+    "mainnet-js": "^1.0.6",
     "next": "^12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
