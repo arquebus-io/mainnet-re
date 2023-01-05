@@ -6,7 +6,8 @@ import * as $$Promise from "@ryyppy/rescript-promise/src/Promise.mjs";
 import * as MainnetJs from "mainnet-js";
 
 function $$default(request, response) {
-  Mainnet.initChipnet(undefined);
+  console.log(MainnetJs.DefaultProvider.servers);
+  Mainnet.init(undefined);
   var address = request.query.address;
   if (address !== undefined) {
     return $$Promise.$$catch(MainnetJs.TestNetWallet.watchOnly(address).then(function (wallet) {

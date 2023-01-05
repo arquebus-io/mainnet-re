@@ -4,14 +4,19 @@ import * as MainnetJs from "mainnet-js";
 
 var Types = {};
 
-function initChipnet(param) {
+var CashTokens = {};
+
+function init(param) {
   MainnetJs.DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"];
   
 }
 
+init(undefined);
+
 export {
   Types ,
-  initChipnet ,
+  CashTokens ,
+  init ,
   
 }
-/* mainnet-js Not a pure module */
+/*  Not a pure module */
